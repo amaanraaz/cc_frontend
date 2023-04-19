@@ -11,11 +11,12 @@
 ### And finally making it dynamic using redux toolkit for managing the state.
 
 ## Results can be seen in console when click submit
-![]()
+![](./src/assets/snap1.jpg)
 
 
 #### Authentication for each field is not completed yet due to time boundation.
 #### child of child can be implemented also for object data type.
 
 
-[GitHUb]()
+[GitHUb](https://github.com/amaanraaz/cc_frontend)
+[Live](https://cc-frontend-gilt.vercel.app/)
