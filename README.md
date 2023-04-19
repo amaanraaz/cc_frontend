@@ -5,6 +5,7 @@
 - Required field making it a checkbox 
 - delete button
 - children components can be added when type is object
+- first tried to implement without using redux but it was getting difficult because there we have to lift state up.
 
 
 ### And finally making it dynamic using redux toolkit for managing the state.
