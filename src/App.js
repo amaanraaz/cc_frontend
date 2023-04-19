@@ -1,19 +1,23 @@
 import './App.css';
 import { useState } from 'react';
 import List from './List';
+import { useDispatch } from 'react-redux';
+import { addItem } from './utils/fieldSlice';
+import { useSelector } from 'react-redux';
 
 function App() {
-  const [form,setForm] = useState([{
-    name: "",
-    type: "",
-    required : "",
-    children : ""
-  }]);
+  const dispatch = useDispatch();
+  const fields = useSelector((store)=>store.field.items)
   const handleClick = ()=>{
-    setForm([...form,{name:"",type:"  "}]);
+    dispatch(addItem({
+      name: "",
+      type: "string",
+      required : false,
+      children : []
+    }))
   }
   const handleSubmit =()=>{
-    console.log(form);
+    console.log(fields);
   }
 
   return (
@@ -24,8 +28,8 @@ function App() {
       </div>
       <div className='flex justify-around flex-col'>
       {
-        form.map((key,index)=>(
-          <List len={index+1} index={index} key={index} form={form} setForm={()=>setForm}/>
+        fields.map((field,index)=>(
+          <List len={index+1} index={index} key={index}/>
         ))
       }
       </div>

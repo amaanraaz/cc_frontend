@@ -1,68 +1,57 @@
-import React, {  useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { addName, addReq, addType, deleteField } from './utils/fieldSlice';
+import Child from './Child';
 
-const List = ({len,form,setForm,index}) => {
-    const [value,setValue] = useState("string");
-    const [name,setName] = useState("");
-    const [req,setReq] = useState(true);
-    const [value1,setValue1] = useState([{name:"",type:""}])
+const List = ({len,index}) => {
+    const dispatch = useDispatch();
+    const [childNumber,setChildNumber] = useState(1);
+    const fields = useSelector((store)=>store.field.items);
+    const {name,type,required,children} = fields[index];
 
-    const handleChange=(e)=>{
-        setValue(e.target.value);
+    const handleNameChange = (e)=>{
+        let curr_name = e.target.value;
+        dispatch(addName({index,curr_name}))
     }
-
-    const toggleRequire = ()=>{
-        setReq(!req);
+    const handleTypeChange = (e)=>{
+        let curr_type = e.target.value;
+        dispatch(addType({index,curr_type}))
     }
-    const handleNameChange=(e)=>{
-        setName(e.target.value);
+    const handleReqChange = (e)=>{
+        dispatch(addReq({index}));
     }
-
-    const handleObjectAdd=()=>{
-        setValue1([...value1,{name:"",type:" "}]);
-    }
-
     const handleDelete = ()=>{
-        let data = [...form];
-        data.splice(index,1);
-        setForm(data);
-        console.log(data);
+        dispatch(deleteField({index}))
     }
-
-    useEffect(()=>{
-        let data = [...form];
-        data[index].name = name;
-        data[index].type = value;
-        data[index].required = !req;
-        data[index].children = value1;
-        setForm(data);
-    },[name,value,req,value1])
+    const handleChild = ()=>{
+        setChildNumber(childNumber+1);
+    }
 
   return (
     <div className='flex flex-col justify-around mt-2'>
         <div className='flex'>
             <h3>{len}</h3>
-            <input type='text' value={name} onChange={handleNameChange} className='border-2 mx-1'/>
-            <select onChange={handleChange} className='border-2 mx-1'>
+            <input type='text' className='border-2 mx-1' onChange={handleNameChange} value={name}/>
+            <select  className='border-2 mx-1' onChange={handleTypeChange} value={type}>
                 <option value="string">String</option>
                 <option value="number">Number</option>
                 <option value="object">Object</option>
                 <option value="boolean">Boolean</option>
             </select>
-            <label className='ml-2'>Required: </label>
-            <input type='checkbox' onChange={toggleRequire}/>
+            <label className='ml-2' >Required: </label>
+            <input type='checkbox' onChange={handleReqChange} value={required}/>
             <button className='mx-2' onClick={handleDelete}>Delete</button>
             {
-                value==="object"?<button onClick={handleObjectAdd} className='border-2'>Add</button>:null
+                type==="object"?<button className='border-2' onClick={handleChild}>Add</button>:null
             }
         </div>
-        <div className='ml-40 mt-1'>
-            {
-                value==="object"?
-                value1.map((val,i)=><List form={value1} setForm={setValue1} index={value1.length-1} key={i} />):null
-            }
-        </div>
+        {
+            type==="object"?
+            [...Array(childNumber)].map((n,i)=> <Child key={i} index={index} childNumber={childNumber}/>)       
+            :null
+        }
     </div>
-  )
+)
 }
 
-export default List
+export default List;
