@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { addChild } from './utils/fieldSlice';
 
 const Child = (index,childNumber) => {
-    console.log(index);
     const [value,setValue] = useState({
         name:"",
         type:"string",
@@ -15,19 +14,16 @@ const Child = (index,childNumber) => {
     const dispatch = useDispatch();
 
     const handleChildName = (e)=>{
-        console.log(e.target.value);
         setName(e.target.value);
     }
     const handleChildRequire=()=>{
         setReq(!req)
     }
     useEffect(()=>{
-        console.log(name,req);
         setValue({name,req})
     },[name,req])
 
     useEffect(()=>{
-        console.log(value);
         dispatch(addChild({index,value,childNumber}));
     },[value])
 

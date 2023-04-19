@@ -33,8 +33,6 @@ const fieldSlice = createSlice({
             const childName = action.payload.value.name;
             const childReq = action.payload.value.req;
             const childNum = action.payload.childNumber;
-            console.log(action.payload);
-            // console.log(current(state.items[index]));
             state.items[index].children[childNum]={childName,childReq};
         },
         deleteField:(state,action)=>{
